@@ -50,6 +50,10 @@ module Dependabot
         end
       end
 
+      def recurse_submodules_when_cloning?
+        true
+      end
+
       def package_manager_version
         package_managers = {}
 
