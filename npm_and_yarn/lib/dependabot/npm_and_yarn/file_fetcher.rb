@@ -70,7 +70,7 @@ module Dependabot
       def fetch_files
         fetched_files = []
         fetched_files << package_json
-        fetched_files << package_lock if package_lock && !ignore_package_lock?
+        fetched_files << package_lock if package_lock
         fetched_files << yarn_lock if yarn_lock
         fetched_files << shrinkwrap if shrinkwrap
         fetched_files << lerna_json if lerna_json
@@ -156,7 +156,7 @@ module Dependabot
       def package_lock
         return @package_lock if defined?(@package_lock)
 
-        @package_lock = fetch_file_if_present("package-lock.json")
+        @package_lock = fetch_file_if_present("package-lock.json") unless ignore_package_lock?
       end
 
       def yarn_lock
