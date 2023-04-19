@@ -52,6 +52,12 @@ module Dependabot
       end
 
       def package_manager_version
+        @package_manager_version ||= setup_package_manager_version
+      end
+
+      private
+
+      def setup_package_manager_version
         package_managers = {}
 
         package_managers["npm"] = Helpers.npm_version_numeric(package_lock.content) if package_lock
@@ -65,9 +71,9 @@ module Dependabot
         }
       end
 
-      private
-
       def fetch_files
+        @package_manager_version = setup_package_manager_version
+
         fetched_files = []
         fetched_files << package_json
         fetched_files += lockfiles
@@ -142,7 +148,7 @@ module Dependabot
       def yarn_version
         return @yarn_version if defined?(@yarn_version)
 
-        @yarn_version = package_manager.locked_version("yarn") || guess_yarn_version
+        @yarn_version = package_manager.setup("yarn") || guess_yarn_version
       end
 
       def guess_yarn_version

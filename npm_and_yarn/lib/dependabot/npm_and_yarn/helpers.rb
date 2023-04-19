@@ -44,7 +44,17 @@ module Dependabot
       end
 
       def self.fetch_yarn_major_version
-        output = SharedHelpers.run_shell_command("yarn --version")
+        # When COREPACK_ENABLE_PROJECT_SPEC is unset, `yarn --version` will
+        # still report the project's version even when the global version is
+        # actually being run. I have no idea whether this is expected behavior
+        # or not but for our purposes, we do want the real version that's
+        # running, so we move outside of the project to figure it out.
+        output = if ENV["COREPACK_ENABLE_PROJECT_SPEC"] == "0"
+                   Dir.chdir(Dir.home) { SharedHelpers.run_shell_command("yarn --version") }
+                 else
+                   SharedHelpers.run_shell_command("yarn --version")
+                 end
+
         Version.new(output).major
       end
 
