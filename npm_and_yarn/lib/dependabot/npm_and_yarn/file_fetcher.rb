@@ -70,9 +70,7 @@ module Dependabot
       def fetch_files
         fetched_files = []
         fetched_files << package_json
-        fetched_files << package_lock if package_lock
-        fetched_files << yarn_lock if yarn_lock
-        fetched_files << shrinkwrap if shrinkwrap
+        fetched_files += lockfiles
         fetched_files << lerna_json if lerna_json
         fetched_files << npmrc if npmrc
         fetched_files << yarnrc if yarnrc
@@ -84,6 +82,14 @@ module Dependabot
         fetched_files << inferred_npmrc if inferred_npmrc
 
         fetched_files.uniq
+      end
+
+      def lockfiles
+        fetched_lockfiles = []
+        fetched_lockfiles << package_lock if package_lock
+        fetched_lockfiles << yarn_lock if yarn_lock
+        fetched_lockfiles << shrinkwrap if shrinkwrap
+        fetched_lockfiles
       end
 
       # If every entry in the lockfile uses the same registry, we can infer
