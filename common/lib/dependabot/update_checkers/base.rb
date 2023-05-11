@@ -178,7 +178,8 @@ module Dependabot
           requirements: updated_requirements,
           previous_version: previous_version,
           previous_requirements: dependency.requirements,
-          package_manager: dependency.package_manager
+          package_manager: dependency.package_manager,
+          on_package_manager: dependency.on_package_manager?
         )
       end
 

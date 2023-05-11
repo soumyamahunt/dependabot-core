@@ -96,7 +96,8 @@ module Dependabot
                             version: dep.version,
                             requirements: dep.requirements,
                             package_manager: dep.package_manager,
-                            subdependency_metadata: dep.subdependency_metadata
+                            subdependency_metadata: dep.subdependency_metadata,
+                            on_package_manager: dep.on_package_manager?
                           )
                         end
 
